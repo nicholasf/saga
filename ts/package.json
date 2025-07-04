@@ -1,0 +1,17 @@
+{
+  "name": "mcprp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "clean": "rm -rf dist",
+    "rebuild": "npm run clean && npm run build",
+    "test": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' mocha test/**/*.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}

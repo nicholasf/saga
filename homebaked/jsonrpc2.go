@@ -3,43 +3,35 @@
 package main
 
 import (
-	"encoding/json"
+	"context"
+	"log"
 
 	"github.com/sourcegraph/jsonrpc2"
 )
 
 type MCPServer interface {
-	Call(r jsonrpc2.Request) (jsonrpc2.Response, error)
+	Handle(ctx context.Context, c *jsonrpc2.Conn, r *jsonrpc2.Request)
 }
 
 type server struct{}
 
 func NewMCPServer() MCPServer {
-	return server{}
+	return &server{}
 }
 
-func (s server) Call(r jsonrpc2.Request) (jsonrpc2.Response, error) {
+// Handle implements the jsonrpc2.Handler interface.
+func (s *server) Handle(ctx context.Context, c *jsonrpc2.Conn, r *jsonrpc2.Request) {
 	switch r.Method {
-	default:
-		m := json.RawMessage(`{"hello"}`)
-		response := jsonrpc2.Response{
-			ID:     jsonrpc2.ID{Num: 1},
-			Result: &m,
-			Error:  nil,
+	case "sayHello":
+		if err := c.Reply(ctx, r.ID, "hello world"); err != nil {
+			log.Println(err)
+			return
 		}
-		return response, nil
+	default:
+		err := &jsonrpc2.Error{Code: jsonrpc2.CodeMethodNotFound, Message: "Method not found"}
+		if err := c.ReplyWithError(ctx, r.ID, err); err != nil {
+			log.Println(err)
+			return
+		}
 	}
 }
-
-/*
-errorResponse := jsonrpc2.Response{
-    Version: "2.0",
-    ID:      jsonrpc2.ID{Num: 1},
-    Result:  nil,
-    Error: &jsonrpc2.Error{
-        Code:    -32602,
-        Message: "Invalid params",
-        Data:    "The provided parameters are not valid",
-    },
-}
-*/

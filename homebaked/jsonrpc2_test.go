@@ -1,24 +1,34 @@
 package main
 
 import (
-	"encoding/json"
+	"context"
+	"log/slog"
+	"net"
 	"testing"
 
 	"github.com/sourcegraph/jsonrpc2"
+	"github.com/stretchr/testify/require"
 )
 
 func TestCall(t *testing.T) {
+	ctx := context.Background()
+	connA, connB := net.Pipe()
+
+	sender := jsonrpc2.NewConn(ctx, jsonrpc2.NewPlainObjectStream(connA), nil)
+	defer sender.Close()
+
 	s := NewMCPServer()
-	m := json.RawMessage(`{ "hello": "there"}`)
-	r := jsonrpc2.Request{
-		ID:     jsonrpc2.ID{Num: 1},
-		Method: "test.method",
-		Params: &m,
-		Notif:  false,
-	}
+	receiver := jsonrpc2.NewConn(ctx, jsonrpc2.NewPlainObjectStream(connB), s)
+	defer receiver.Close()
 
 	t.Run("Testing call", func(t *testing.T) {
-		res, err := s.Call(r)
+		var result string
+		if err := sender.Call(ctx, "test", nil, &result); err != nil {
+			slog.Error(err.Error())
+			t.Fail()
+		}
 
+		slog.Info(result)
+		require.NotNil(t, result)
 	})
 }

@@ -1,9 +1,6 @@
 -- PostgreSQL Schema for Saga Campaign Management System
 -- Generated from saga.d.ts TypeScript interfaces
 
--- Enable UUID extension for primary keys
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 -- Create ENUM types
 CREATE TYPE campaign_status AS ENUM ('planning', 'active', 'hiatus', 'completed');
 CREATE TYPE campaign_tone AS ENUM ('heroic', 'gritty', 'dark', 'lighthearted', 'epic', 'horror', 'comedic', 'mysterious', 'romantic', 'political');
@@ -43,16 +40,6 @@ CREATE TYPE relationship_intensity AS ENUM ('weak', 'moderate', 'strong');
 CREATE TYPE reward_type AS ENUM ('gold', 'item', 'experience', 'favor', 'information', 'other');
 CREATE TYPE target_type AS ENUM ('npc', 'character');
 
--- Base entities table (for inheritance-like behavior)
-CREATE TABLE entities (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    is_active BOOLEAN DEFAULT TRUE
-);
-
 -- Worlds table
 CREATE TABLE worlds (
     id SERIAL PRIMARY KEY,
@@ -74,7 +61,7 @@ CREATE TABLE calendars (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     days_per_week INTEGER NOT NULL,
-    current_date VARCHAR(255),
+    campaign_date VARCHAR(255),
     moon_phases TEXT[]
 );
 
@@ -732,7 +719,6 @@ END;
 $$ language 'plpgsql';
 
 -- Create triggers for updated_at columns
-CREATE TRIGGER update_entities_updated_at BEFORE UPDATE ON entities FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_worlds_updated_at BEFORE UPDATE ON worlds FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_campaign_prompts_updated_at BEFORE UPDATE ON campaign_prompts FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_settings_updated_at BEFORE UPDATE ON settings FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

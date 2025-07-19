@@ -1,16 +1,14 @@
 
 // Persistable entity in db
-interface Entity {
+export interface PersistableEntity {
     id: number;
     name: string;
     description?: string;
     createdAt: Date;
     updatedAt: Date;
-    isActive: boolean;
-
 }
 
-interface Campaign extends Entity {
+export interface Campaign extends PersistableEntity {
     inception: Date;
     endDate?: Date;
     players: Player[];
@@ -20,11 +18,11 @@ interface Campaign extends Entity {
     parts: Part[];
     npcs: NPC[];
     currentLevel: number;
-    items: MagicItem[];
+    magicItems: MagicItem[];
     status: 'planning' | 'active' | 'hiatus' | 'completed';
 }
 
-interface CampaignPrompt extends Entity {
+export interface CampaignPrompt extends PersistableEntity {
   description?: string;
   
   // Core Tone & Atmosphere
@@ -61,7 +59,7 @@ interface CampaignPrompt extends Entity {
   homebrewFriendly: boolean;
 }
 
-interface Setting extends Entity {
+export interface Setting extends PersistableEntity {
     world: World;
     worldId: number;
     era: string;
@@ -74,7 +72,7 @@ interface Setting extends Entity {
     currentEvents: CurrentEvent[];
 }
 
-interface World extends Entity {
+export interface World extends PersistableEntity {
     type: 'planet' | 'plane' | 'realm' | 'dimension' | 'other';
     geography: string;
     climate: string;
@@ -84,9 +82,7 @@ interface World extends Entity {
 }
 
 
-interface Calendar {
-    id: number;
-    name: string;
+export interface Calendar extends PersistableEntity {
     months: Month[];
     daysPerWeek: number;
     currentDate: string;
@@ -94,30 +90,26 @@ interface Calendar {
     moonPhases?: string[];
 }
 
-interface Month {
-    id: number;
-    name: string;
+export interface Month extends PersistableEntity {
     daysCount: number;
     season: string;
 }
 
-interface Holiday {
-    id: number;
-    name: string;
+export interface Holiday extends PersistableEntity {
     date: string;
     description: string;
     importance: 'minor' | 'major' | 'critical';
 }
 
 
-interface HistoricalEvent extends Entity {
+export interface HistoricalEvent extends PersistableEntity {
     date: string;
     significance: 'minor' | 'major' | 'world-changing';
     participants: string[];
     consequences: string[];
 }
 
-interface CurrentEvent extends Entity {
+export interface CurrentEvent extends PersistableEntity {
     locations: Location[];
     factions: Faction[];
     npcs: NPC[];
@@ -126,24 +118,20 @@ interface CurrentEvent extends Entity {
 }
 
 
-interface Cosmology {
-    id: number;
+export interface Cosmology extends PersistableEntity {
     planes: Plane[];
     connections: PlaneConnection[];
     deities: Deity[];
 }
 
-interface Plane {
-    id: number;
-    name: string;
+export interface Plane extends PersistableEntity {
     description: string;
     inhabitants: string[];
     traits: string[];
     accessPoints?: string[];
 }
 
-interface PlaneConnection {
-    id: number;
+export interface PlaneConnection extends PersistableEntity {
     sourcePlane: Plane;
     sourcePlaneId: number;
     targetPlane: Plane;
@@ -153,7 +141,7 @@ interface PlaneConnection {
     description?: string;
 }
 
-interface Deity extends Entity {
+export interface Deity extends PersistableEntity {
     domains: string[];
     alignment: string;
     description: string;
@@ -162,11 +150,11 @@ interface Deity extends Entity {
     clergy?: string;
 }
 
-interface Player extends Entity {
+export interface Player extends PersistableEntity {
     characters: Character[];
 }
 
-interface SessionAttendance {
+export interface SessionAttendance {
     id: number;
     session: Session;
     sessionId: number;
@@ -175,17 +163,16 @@ interface SessionAttendance {
     note?: string;
 }
 
-interface Character extends Entity {
+export interface Character extends PersistableEntity {
     player: Player;
     playerId: number;
     campaign: Campaign;
     campaignId: number;
     race: string;
-    class: string;
+    klass: string;
     level: number;
     background: string;
     alignment: string;
-    abilities: Abilities;
     experience: number;
     personality: {
         traits?: string[];
@@ -202,18 +189,7 @@ interface Character extends Entity {
     status: 'active' | 'inactive' | 'deceased';
 }
 
-interface Abilities {
-    strength: number;
-    dexterity: number;
-    constitution: number;
-    intelligence: number;
-    wisdom: number;
-    charisma: number;
-}
-
-interface Item {
-    id: number;
-    name: string;
+export interface Item extends PersistableEntity {
     description?: string;
     quantity: number;
     weight?: number;
@@ -221,7 +197,7 @@ interface Item {
     type: 'weapon' | 'armor' | 'gear' | 'consumable' | 'treasure' | 'other';
 }
 
-interface MagicItem extends Item {
+export interface MagicItem extends Item {
     rarity: 'common' | 'uncommon' | 'rare' | 'very rare' | 'legendary' | 'artifact';
     attunement: boolean;
     attunedBy?: Character;
@@ -234,7 +210,7 @@ interface MagicItem extends Item {
 }
 
 
-interface Location extends Entity {
+export interface Location extends PersistableEntity {
     parent?: Location;
     parentId?: number;
     children: Location[];
@@ -254,7 +230,7 @@ interface Location extends Entity {
 }
 
 
-interface PointOfInterest extends Entity {
+export interface PointOfInterest extends PersistableEntity {
     location: Location;
     locationId: number;
     type: 'shop' | 'tavern' | 'temple' | 'guild' | 'landmark' | 'dungeon' | 'other';
@@ -266,7 +242,7 @@ interface PointOfInterest extends Entity {
 }
 
 
-interface Faction extends Entity {
+export interface Faction extends PersistableEntity {
     leader?: NPC;
     leaderId?: number;
     members: NPC[];
@@ -283,7 +259,7 @@ interface Faction extends Entity {
 }
 
 
-interface Religion extends Entity {
+export interface Religion extends PersistableEntity {
     deities: Deity[];
     practices: string[];
     holySymbols: string[];
@@ -294,7 +270,7 @@ interface Religion extends Entity {
     restrictions: string[];
 }
 
-interface Part extends Entity {
+export interface Part extends PersistableEntity {
     campaign: Campaign;
     campaignId: number;
     summary: string;
@@ -312,7 +288,7 @@ interface Part extends Entity {
     order: number;
 }
 
-interface Session extends Entity {
+export interface Session extends PersistableEntity {
     part: Part;
     partId: number;
     number: number;
@@ -327,15 +303,15 @@ interface Session extends Entity {
     nextSessionId?: number;
 }
 
-interface Encounter extends Entity {
+export interface Encounter extends PersistableEntity {
     description: string
 }
 
-interface Event extends Entity {
+export interface Event extends PersistableEntity {
     description: string
 }
 
-interface SessionPlan extends Entity {
+export interface SessionPlan extends PersistableEntity {
     session: Session;
     sessionId: number;
     goals: string[];
@@ -348,7 +324,7 @@ interface SessionPlan extends Entity {
     secrets?: string[];
 }
 
-interface SessionSummary extends Entity {
+export interface SessionSummary extends PersistableEntity {
     session: Session;
     sessionId: number;
     date: Date;
@@ -367,14 +343,13 @@ interface SessionSummary extends Entity {
     }[];
 }
 
-interface NPC extends Entity {
+export interface NPC extends PersistableEntity {
     type: 'individual' | 'group';
     race?: string;
-    class?: string;
+    klass?: string;
     occupation: string;
     appearance: string;
     personality: string;
-    abilities?: Abilities;
     motivation: string;
     goals?: string[];
     secrets?: string[];
@@ -394,8 +369,7 @@ interface NPC extends Entity {
     isUnique: boolean;
 }
 
-interface NPCRelationship {
-    id: number;
+export interface NPCRelationship extends PersistableEntity {
     source: NPC;
     sourceId: number;
     target: NPC | Character;

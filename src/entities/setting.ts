@@ -1,0 +1,35 @@
+import type { Setting, World, Location, Faction, Religion, Cosmology, HistoricalEvent, CurrentEvent, Calendar } from '../types/saga';
+
+export const createSetting = (
+    id: number,
+    name: string,
+    createdAt: Date,
+    updatedAt: Date,
+    world: World,
+    worldId: number,
+    era: string,
+    mainLocations: Location[],
+    factions: Faction[],
+    religions: Religion[],
+    history: HistoricalEvent[],
+    currentEvents: CurrentEvent[],
+    description?: string,
+    calendar?: Calendar,
+    cosmology?: Cosmology,
+): Setting => ({
+    id,
+    name,
+    description,
+    createdAt,
+    updatedAt,
+    world,
+    worldId,
+    era,
+    mainLocations,
+    factions,
+    religions,
+    history,
+    currentEvents,
+    calendar,
+    cosmology
+});

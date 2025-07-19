@@ -1,0 +1,35 @@
+import type { SessionPlan, Session, Encounter, Event, NPC, Location } from '../types/saga';
+
+export const createSessionPlan = (
+    id: number,
+    name: string,
+    createdAt: Date,
+    updatedAt: Date,
+    session: Session,
+    sessionId: number,
+    goals: string[],
+    encounters: Encounter[],
+    events: Event[],
+    keyNPCs: NPC[],
+    locations: Location[],
+    description?: string,
+    openingScene?: string,
+    contingencies?: string[],
+    secrets?: string[],
+): SessionPlan => ({
+    id,
+    name,
+    description,
+    createdAt,
+    updatedAt,
+    session,
+    sessionId,
+    goals,
+    encounters,
+    events,
+    keyNPCs,
+    locations,
+    openingScene,
+    contingencies,
+    secrets
+});

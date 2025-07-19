@@ -1,0 +1,37 @@
+import type { Campaign, Player, Character, Setting, CampaignPrompt, Part, NPC, MagicItem } from '../types/saga';
+
+export const createCampaign = (
+    id: number,
+    name: string,
+    createdAt: Date,
+    updatedAt: Date,
+    inception: Date,
+    players: Player[],
+    characters: Character[],
+    setting: Setting,
+    prompt: CampaignPrompt,
+    parts: Part[],
+    npcs: NPC[],
+    currentLevel: number,
+    magicItems: MagicItem[],
+    status: 'planning' | 'active' | 'hiatus' | 'completed',
+    description?: string,
+    endDate?: Date,
+): Campaign => ({
+    id,
+    name,
+    description,
+    createdAt,
+    updatedAt,
+    inception,
+    endDate,
+    players,
+    characters,
+    setting,
+    prompt,
+    parts,
+    npcs,
+    currentLevel,
+    magicItems,
+    status
+});

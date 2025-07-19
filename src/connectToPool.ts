@@ -1,12 +1,5 @@
 import { Pool, PoolConfig } from 'pg';
-
-interface DatabaseConfig {
-  port: number;
-  user: string;
-  password: string;
-  host: string;
-  database?: string;
-}
+import { Database } from './config';
 
 /**
  * Creates and returns a database connection pool asynchronously
@@ -14,13 +7,13 @@ interface DatabaseConfig {
  * @returns Promise resolving to a PostgreSQL connection pool
  * @throws Error if connection fails
  */
-export const createDatabaseConnection = async (config: DatabaseConfig): Promise<Pool> => {
+export default async (config: Database): Promise<Pool> => {
   const poolConfig: PoolConfig = {
     user: config.user,
     host: config.host,
     password: config.password,
-    port: config.port,
-    database: config.database || 'postgres', // Default to 'postgres' if not specified
+    port: parseInt(config.port),
+    database: config.name 
   };
 
   try {
@@ -42,3 +35,6 @@ export const createDatabaseConnection = async (config: DatabaseConfig): Promise<
     throw error;
   }
 };
+
+
+

@@ -6,6 +6,8 @@ This project is mostly for experimenting with an MCP integration with Claude, th
 Verify that you can write a tool that lets the LLM set state in memory.
 
 
+The Saga data model is designed to be lightweight, to let you begin to plan content for your campaign alongside an LLM without overdefining things. Often you won't understand the full picture of what you want.
+
 
 ## Model
 

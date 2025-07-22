@@ -54,8 +54,6 @@ export interface CampaignPrompt extends PersistableEntity {
   keyWords: string[]; // adjectives that capture the feel
   avoidanceList?: string[]; // themes/content to avoid
   
-  // System Integration
-  rulesEmphasis: 'strict' | 'flexible' | 'narrative-first' | 'rule-of-cool';
   homebrewFriendly: boolean;
 }
 
